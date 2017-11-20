@@ -5,7 +5,7 @@ const height = canvas.height = 600;
 const shootingSFX1 = new Audio("assets/shot1.mp3");
 const shootingSFX2 = new Audio("assets/shot2.mp3");
 const lifeLostSFX = new Audio("assets/explode01.ogg");
-const gameOverSFX = new Audio("assets/gameover.mp3");
+let scene = 0;
 const playerHeight = 10;
 const playerWidth = 100;
 let debug = false;
@@ -22,8 +22,20 @@ function background(){
 }
 
 function update(){
-	requestAnimationFrame(update);
 	background();
+	if(scene == 0){
+		let title = "Bomb Dodger";
+		let beginText = "Press 'E' to begin.";
+		ctx.fillStyle = "#000";
+		ctx.font = "60px Arial";
+		ctx.fillText(title, width/2-30*title.toString().length/2, height/2);
+		ctx.font = "25px Arial";
+		ctx.fillText(beginText, width/2-12.5*beginText.toString().length/2, height/2 + 40);
+	}else if(scene == 1){
+		begin();
+		scene++;
+	}
+	requestAnimationFrame(update);
 	player.update();
 	if(bombs){
 		for(let i = bombs.length - 1; i >= 0; i--){
@@ -48,7 +60,11 @@ function update(){
 		}
 	}
 }
-setInterval(spawnBomb, 400 - difficulty);
+function begin(){
+	player.lives = 3;
+	player.score = 0;
+	setInterval(spawnBomb, 400 - difficulty);
+}
 document.addEventListener("keydown", (event)=>{
 	if(event.keyCode === 37){
 		player.setDir(-1);
@@ -74,6 +90,9 @@ document.addEventListener("keyup", (event)=>{
 	if(event.keyCode === 39){
 		player.setDir(0);
 	}
+	if(event.keyCode === 69 && scene==0){
+		scene = 1;
+	}
 });
 
 function spawnBomb(){
@@ -81,7 +100,6 @@ function spawnBomb(){
 }	
 
 function endGame(){
-	gameOverSFX.play();
 	alert("You Lost with a Score of " + player.score);
 	window.location.reload();
 }
