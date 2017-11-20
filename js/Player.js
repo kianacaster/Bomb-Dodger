@@ -45,7 +45,7 @@ class Player
 			}
 		}
 		ctx.font = "30px Arial";
-		ctx.fillText("Score : " + this.scoreString, width - 15*(this.scoreString.length + 7),30);
+		ctx.fillText("Score : " + this.scoreString, width - 15*(this.scoreString.length + 7) - 10,30);
 	}
 	
 	shoot()
